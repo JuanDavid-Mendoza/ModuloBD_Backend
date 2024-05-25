@@ -25,8 +25,8 @@ export class GetTestsMysql {
   async getTestByProfile(profilePK: string): Promise<TestModel[]> {
     const tests = await executeQuery(
       `SELECT P.* FROM PRUEBA P
-        INNER JOIN PROFILE PR ON PR.IDDISCIPLINA_FK = P.IDDISCIPLINA_FK
-        WHERE PR.IDPERFIL = ${profilePK}`
+        INNER JOIN PERFIL PR ON PR.IDDISCIPLINA_FK = P.IDDISCIPLINA_FK
+        WHERE PR.IDPERFIL = ${profilePK} AND P.PRUEBAACTIVA = 1`
     );
 
     return tests;

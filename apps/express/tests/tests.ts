@@ -26,6 +26,7 @@ const GetTestByProfile = async (req: Request, res: Response) => {
     const data = await crudTests.getTestByProfile(profileId);
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
+    console.log(e);
     return res.status(500).json({ error: e });
   }
 };

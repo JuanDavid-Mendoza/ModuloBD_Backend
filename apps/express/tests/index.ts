@@ -13,6 +13,6 @@ const testsPath = '/tests';
 /* Tests */
 testRouter.post(`${testsPath}/create`, CreateTest);
 testRouter.get(`${testsPath}/getAll`, GetTests);
-testRouter.get(`${testsPath}/getByProfile`, GetTestByProfile);
+testRouter.get(`${testsPath}/getByProfile/:profileId`, GetTestByProfile);
 
 export { testRouter };
