@@ -34,9 +34,25 @@ export class CrudCandidatesApp {
     return true;
   }
 
-  async getCandidates(profileId: string) {
+  async getCandidatesByProfile(profileId: string) {
     const getCandidates = new GetCandidatesMysql();
     const candidates = await getCandidates.getCandidates(profileId);
+
+    if (candidates.length) {
+      const users = candidates.map((c) => `'${c.USUARIO}'`).join(',');
+      const hvs = await getCandidates.getHVByUsers(users);
+
+      if (hvs.length) candidates.forEach((candidate) => {
+        candidate.HVS = hvs.filter((hv) => hv.USUARIO_FK === candidate.USUARIO);
+      });
+    }
+
+    return candidates;
+  }
+
+  async getSummonedCandidates(profileId: string, reqConsec: string) {
+    const getCandidates = new GetCandidatesMysql();
+    const candidates = await getCandidates.getSummonedCandidates(profileId, reqConsec);
 
     if (candidates.length) {
       const users = candidates.map((c) => `'${c.USUARIO}'`).join(',');

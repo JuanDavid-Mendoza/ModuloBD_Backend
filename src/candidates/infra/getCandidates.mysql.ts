@@ -31,6 +31,22 @@ export class GetCandidatesMysql {
     return candidates;
   }
 
+  async getSummonedCandidates(profileId: string, reqConsec: string): Promise<CandidateModel[]> {
+    const candidates = await executeQuery(
+      `SELECT DISTINCT C.*, TD.DESCTIPODOC FROM CANDIDATO C
+      INNER JOIN TIPODOC TD ON TD.IDTIPODOC = C.IDTIPODOC_FK
+      WHERE C.USUARIO IN (
+        SELECT USUARIO_FK FROM PROCESOCANDIDATO
+        WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '3' AND CONSECREQUE_FK = ${reqConsec} 
+        INTERSECT
+        SELECT USUARIO_FK FROM PROCESOCANDIDATO
+        WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '4' AND CONSECREQUE_FK = ${reqConsec}
+      )`
+    );
+
+    return candidates;
+  }
+
   async getHVByUsers(users: string): Promise<HVModel[]> {
     const hvs = await executeQuery(
       `SELECT HV.*, I.NOMINSTITUCION, TIP.DESCTIPOITEMPERFIL FROM HV 

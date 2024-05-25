@@ -4,7 +4,8 @@ import { Router } from 'express';
 import {
   CreateCandidate,
   CreateCandidateProcesses,
-  GetCandidates,
+  GetCandidatesByProfile,
+  GetSummonedCandidates,
 } from './candidates'
 
 const candidateRouter = Router();
@@ -13,6 +14,7 @@ const candidatesPath = '/candidates';
 /* Candidates */
 candidateRouter.post(`${candidatesPath}/create`, CreateCandidate);
 candidateRouter.post(`${candidatesPath}/createCandProcesses`, CreateCandidateProcesses);
-candidateRouter.get(`${candidatesPath}/getAll`, GetCandidates);
+candidateRouter.get(`${candidatesPath}/getByProfile/:profileId`, GetCandidatesByProfile);
+candidateRouter.get(`${candidatesPath}/summonedCandidates`, GetSummonedCandidates);
 
 export { candidateRouter };

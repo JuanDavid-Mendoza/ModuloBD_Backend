@@ -20,11 +20,22 @@ const CreateCandidateProcesses = async (req: Request, res: Response) => {
     return res.status(500).json({ error: e });
   }
 };
-const GetCandidates = async (req: Request, res: Response) => {
+const GetCandidatesByProfile = async (req: Request, res: Response) => {
   try {
-    const profileId = req.query ? req.query.profileId : null as any;
+    const profileId = req.params ? req.params.profileId : null as any;
     const crudCandidates = new CrudCandidatesApp();
-    const data = await crudCandidates.getCandidates(profileId);
+    const data = await crudCandidates.getCandidatesByProfile(profileId);
+    return data ? res.status(200).json(data) : res.status(200).json();
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({ error: e });
+  }
+};
+const GetSummonedCandidates = async (req: Request, res: Response) => {
+  try {
+    const params = req.query as any || {};
+    const crudCandidates = new CrudCandidatesApp();
+    const data = await crudCandidates.getSummonedCandidates(params.profileId, params.reqConsec);
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
     console.log(e)
@@ -35,5 +46,6 @@ const GetCandidates = async (req: Request, res: Response) => {
 export {
   CreateCandidate,
   CreateCandidateProcesses,
-  GetCandidates,
+  GetCandidatesByProfile,
+  GetSummonedCandidates,
 };
