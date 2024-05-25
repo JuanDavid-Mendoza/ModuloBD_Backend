@@ -1,4 +1,5 @@
 import { CandidateModel } from '../domain/candidate.model';
+import { CandidateProcessModel } from '../domain/candidateProcess.model';
 import { PersistCandidateMysql } from '../infra/persistCandidate.mysql';
 import { GetCandidatesMysql } from '../infra/getCandidates.mysql';
 
@@ -12,6 +13,25 @@ export class CrudCandidatesApp {
     await persistCandidate.create(data);
 
     return { createdPK: data.USUARIO };
+  }
+
+  async createCandProcesses(data: CandidateProcessModel) {
+    const persistCandidate = new PersistCandidateMysql();
+
+    for await (const user of data.USERS!) {
+      const process = {
+        USUARIO_FK: user,
+        IDPERFIL_FK: data.IDPERFIL_FK,
+        IDFASE_FK: data.IDFASE_FK,
+        CONSECREQUE_FK: data.CONSECREQUE_FK,
+        CONSPROCESO_FK: data.CONSPROCESO_FK,
+        FECHAPRESENTACION: data.FECHAPRESENTACION
+      }
+
+      await persistCandidate.createCandProcess(process);
+    }
+
+    return true;
   }
 
   async getCandidates(profileId: string) {

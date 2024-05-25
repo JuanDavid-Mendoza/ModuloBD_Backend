@@ -24,7 +24,9 @@ export class GetEmployeesMysql {
 
   async byEmail(email: string): Promise<EmployeeModel> {
     const employee = await first(
-      `SELECT E.* FROM EMPLEADO E
+      `SELECT E.*, TC.DESCTIPOCARGO FROM EMPLEADO E
+        INNER JOIN CARGO C ON C.CODEMPLEADO_FK = E.CODEMPLEADO
+        INNER JOIN TIPOCARGO TC ON TC.IDTIPOCARGO = C.IDTIPOCARGO_FK
         WHERE E.CORREO = '${email}'`
     );
 
