@@ -40,10 +40,22 @@ const CreateCandidateTest = async (req: Request, res: Response) => {
     return res.status(500).json({ error: e });
   }
 };
+const GetWinningCandidates = async (req: Request, res: Response) => {
+  try {
+    const params = req.query as any || {};
+    const crudTests = new CrudTestsApp();
+    const data = await crudTests.getWinners(params.profileId, params.phaseId, params.reqConsec, params.testId);
+    return data ? res.status(200).json(data) : res.status(200).json();
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({ error: e });
+  }
+};
 
 export {
   CreateTest,
   GetTests,
   GetTestByProfile,
   CreateCandidateTest,
+  GetWinningCandidates,
 };

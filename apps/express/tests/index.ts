@@ -6,6 +6,7 @@ import {
   GetTests,
   GetTestByProfile,
   CreateCandidateTest,
+  GetWinningCandidates,
 } from './tests'
 
 const testRouter = Router();
@@ -16,5 +17,6 @@ testRouter.post(`${testsPath}/create`, CreateTest);
 testRouter.get(`${testsPath}/getAll`, GetTests);
 testRouter.get(`${testsPath}/getByProfile/:profileId`, GetTestByProfile);
 testRouter.post(`${testsPath}/createCandTest`, CreateCandidateTest);
+testRouter.get(`${testsPath}/getWinners`, GetWinningCandidates);
 
 export { testRouter };

@@ -55,4 +55,9 @@ export class CrudTestsApp {
 
     return true;
   }
+
+  getWinners(profileId: string, phaseId: string, reqConsec: number, testId: string) {
+    const getTests = new GetTestsMysql();
+    return getTests.getWinners(profileId, phaseId, reqConsec, testId);
+  }
 }
