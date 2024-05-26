@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import { CrudEmployeesApp } from '../../../src/employees/app/crudEmployees.app';
+import { EmployeesApp } from '../../../src/employees/app/employees.app';
+
+// Se obtienen los parámetros de la petición y son enviados a las "App" en sus respectivos métodos
 
 const CreateEmployee = async (req: Request, res: Response) => {
   try {
-    const crudEmployees = new CrudEmployeesApp();
+    const crudEmployees = new EmployeesApp();
     const data = await crudEmployees.create(req.body);
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
@@ -12,7 +14,7 @@ const CreateEmployee = async (req: Request, res: Response) => {
 };
 const GetEmployees = async (req: Request, res: Response) => {
   try {
-    const crudEmployees = new CrudEmployeesApp();
+    const crudEmployees = new EmployeesApp();
     const data = await crudEmployees.getEmployees();
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
@@ -21,7 +23,7 @@ const GetEmployees = async (req: Request, res: Response) => {
 };
 const LogIn = async (req: Request, res: Response) => {
   try {
-    const crudEmployees = new CrudEmployeesApp();
+    const crudEmployees = new EmployeesApp();
     const data = await crudEmployees.logIn(req.body);
     return res.status(200).json(data);
   } catch (e) {
@@ -30,7 +32,7 @@ const LogIn = async (req: Request, res: Response) => {
 };
 const GetGeneralAnalysts = async (req: Request, res: Response) => {
   try {
-    const crudEmployees = new CrudEmployeesApp();
+    const crudEmployees = new EmployeesApp();
     const data = await crudEmployees.getGeneralAnalysts();
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {

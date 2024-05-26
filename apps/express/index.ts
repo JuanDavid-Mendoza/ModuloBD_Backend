@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors());
 
-// Routes
+// Rutas de todos los servicios
 app.use(employeeRouter, requirementRouter, profileRouter, candidateRouter, testRouter);
 
 app.listen(port, () => {

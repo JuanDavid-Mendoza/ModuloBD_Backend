@@ -1,27 +1,31 @@
 import { CandidateModel } from '../domain/candidate.model';
 import { CandidateProcessModel } from '../domain/candidateProcess.model';
-import { PersistCandidateMysql } from '../infra/persistCandidate.mysql';
-import { GetCandidatesMysql } from '../infra/getCandidates.mysql';
+import { PersistCandidateSql } from '../infra/persistCandidate.sql';
+import { GetCandidatesSql } from '../infra/getCandidates.sql';
 
-export class CrudCandidatesApp {
+// Se realiza la lógica pertinente para hacer las peticiones a las clases "Sql" y ajustar las respuestas de las mismas
+// Las clases "Model" representan las tablas de la base de datos
+
+export class CandidatesApp {
   async create(data: CandidateModel) {
-    const getCandidates = new GetCandidatesMysql();
+    const getCandidates = new GetCandidatesSql();
     const previous = await getCandidates.byPK(data.USUARIO!);
     if (previous) return { message: 'El candidato ya existe en el sistema' }
 
-    const persistCandidate = new PersistCandidateMysql();
+    const persistCandidate = new PersistCandidateSql();
     await persistCandidate.create(data);
 
     return { createdPK: data.USUARIO };
   }
 
   async createCandProcesses(data: CandidateProcessModel) {
-    const persistCandidate = new PersistCandidateMysql();
-    const getCandidate = new GetCandidatesMysql();
+    const persistCandidate = new PersistCandidateSql();
+    const getCandidate = new GetCandidatesSql();
     const reqProcess = await getCandidate.getRequiremetProcessByPk(data.IDPERFIL_FK!, data.IDFASE_FK!, data.CONSECREQUE_FK!);
     if (!reqProcess) return false;
 
     for await (const user of data.USERS!) {
+      // Por cada usuario, crea un registro en la tabla ProcesoCandidato
       const process = {
         USUARIO_FK: user,
         IDPERFIL_FK: data.IDPERFIL_FK,
@@ -38,10 +42,11 @@ export class CrudCandidatesApp {
   }
 
   async getCandidatesByProfile(profileId: string) {
-    const getCandidates = new GetCandidatesMysql();
-    const candidates = await getCandidates.getCandidates(profileId);
+    const getCandidates = new GetCandidatesSql();
+    const candidates = await getCandidates.getCandidatesByProfile(profileId);
 
     if (candidates.length) {
+      // Agrega las HVs de cada candidato
       const users = candidates.map((c) => `'${c.USUARIO}'`).join(',');
       const hvs = await getCandidates.getHVByUsers(users);
 
@@ -54,10 +59,11 @@ export class CrudCandidatesApp {
   }
 
   async getSummonedCandidates(profileId: string, reqConsec: string) {
-    const getCandidates = new GetCandidatesMysql();
+    const getCandidates = new GetCandidatesSql();
     const candidates = await getCandidates.getSummonedCandidates(profileId, reqConsec);
 
     if (candidates.length) {
+      // Agrega las HVs de cada candidato
       const users = candidates.map((c) => `'${c.USUARIO}'`).join(',');
       const hvs = await getCandidates.getHVByUsers(users);
 

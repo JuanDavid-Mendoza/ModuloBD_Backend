@@ -4,7 +4,7 @@ import {
 } from '../../shared/db.oracle';
 import { EmployeeModel } from '../domain/employee.model';
 
-export class GetEmployeesMysql {
+export class GetEmployeesSql {
   async byPK(employeePK: string): Promise<EmployeeModel> {
     const employee = await first(
       `SELECT E.* FROM EMPLEADO E

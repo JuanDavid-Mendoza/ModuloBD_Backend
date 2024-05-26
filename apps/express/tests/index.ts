@@ -9,6 +9,7 @@ import {
   GetWinningCandidates,
 } from './tests'
 
+// Rutas para los servicios de las Pruebas
 const testRouter = Router();
 const testsPath = '/tests';
 

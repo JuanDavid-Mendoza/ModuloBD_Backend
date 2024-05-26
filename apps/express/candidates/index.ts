@@ -8,6 +8,7 @@ import {
   GetSummonedCandidates,
 } from './candidates'
 
+// Rutas para los servicios de los Candidatos
 const candidateRouter = Router();
 const candidatesPath = '/candidates';
 

@@ -1,26 +1,29 @@
 import { EmployeeModel } from '../domain/employee.model';
-import { PersistEmployeeMysql } from '../infra/persistEmployee.mysql';
-import { GetEmployeesMysql } from '../infra/getEmployees.mysql';
+import { PersistEmployeeSql } from '../infra/persistEmployee.sql';
+import { GetEmployeesSql } from '../infra/getEmployees.sql';
 
-export class CrudEmployeesApp {
+// Se realiza la lógica pertinente para hacer las peticiones a las clases "Sql" y ajustar las respuestas de las mismas
+// Las clases "Model" representan las tablas de la base de datos
+
+export class EmployeesApp {
   async create(data: EmployeeModel) {
-    const getEmployees = new GetEmployeesMysql();
+    const getEmployees = new GetEmployeesSql();
     const previous = await getEmployees.byPK(data.CODEMPLEADO!);
     if (previous) return { message: 'El empleado ya existe en el sistema' }
 
-    const persistEmployee = new PersistEmployeeMysql();
+    const persistEmployee = new PersistEmployeeSql();
     await persistEmployee.create(data);
 
     return { createdPK: data.CODEMPLEADO };
   }
 
   getEmployees() {
-    const getEmployees = new GetEmployeesMysql();
+    const getEmployees = new GetEmployeesSql();
     return getEmployees.getEmployees();
   }
 
   async logIn(data: EmployeeModel) {
-    const getEmployees = new GetEmployeesMysql();
+    const getEmployees = new GetEmployeesSql();
     const prev = await getEmployees.byEmail(data.CORREO!);
     if (!prev) return { message: 'El correo no se encuentra en el sistema.', employee: null }
     const message = data.CODEMPLEADO === prev.CODEMPLEADO ? 'Inicio de sesión exitoso.' : 'Código incorrecto';
@@ -30,7 +33,7 @@ export class CrudEmployeesApp {
   }
 
   getGeneralAnalysts() {
-    const getEmployees = new GetEmployeesMysql();
+    const getEmployees = new GetEmployeesSql();
     return getEmployees.getGeneralAnalysts();
   }
 }

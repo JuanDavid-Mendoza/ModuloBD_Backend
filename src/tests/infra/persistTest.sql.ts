@@ -4,7 +4,7 @@ import {
 import { CandidateTestModel } from '../domain/candidateTest.model';
 import { TestModel } from '../domain/test.model';
 
-export class PersistTestMysql {
+export class PersistTestSql {
   async create(data: TestModel): Promise<number> {
     data.IDDISCIPLINA_FK = data.IDDISCIPLINA_FK ? ` '${data.IDDISCIPLINA_FK}' ` : null;
     data.FECHACREADA = data.FECHACREADA ? ` TO_DATE('${data.FECHACREADA}', 'DD-MM-YYYY') ` : null;

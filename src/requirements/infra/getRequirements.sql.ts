@@ -7,7 +7,7 @@ import { FaseModel } from '../domain/fase.model';
 import { RequirementProcessModel } from '../domain/requirementProcess.model';
 import { ProfileFaseModel } from '../domain/profileFase.model';
 
-export class GetRequirementsMysql {
+export class GetRequirementsSql {
   async byPK(requirementPK: number): Promise<RequirementModel> {
     const requirement = await first(
       `SELECT R.* FROM REQUERIMIENTO R
@@ -26,6 +26,7 @@ export class GetRequirementsMysql {
   }
   
   async getLastConsec(): Promise<number> {
+    // Obtiene el último consecutivo de los requerimientos actuales en la base de datos
     const consec = await executeQuery(
       `SELECT R.CONSECREQUE FROM REQUERIMIENTO R ORDER BY R.CONSECREQUE DESC`
     ).then((r) => r.length ? r[0].CONSECREQUE : 1);

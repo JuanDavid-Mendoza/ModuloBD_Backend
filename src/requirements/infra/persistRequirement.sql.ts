@@ -5,7 +5,7 @@ import { RequirementModel } from '../domain/requirement.model';
 import { RequirementProcessModel } from '../domain/requirementProcess.model';
 import { ProfileFaseModel } from '../domain/profileFase.model';
 
-export class PersistRequirementMysql {
+export class PersistRequirementSql {
   async create(data: RequirementModel): Promise<number> {
     data.CODEMPLEADO_FK2 = data.CODEMPLEADO_FK2 ? ` '${data.CODEMPLEADO_FK2}' ` : null;
     data.SALARIOMIN = data.SALARIOMIN || null;
@@ -47,9 +47,12 @@ export class PersistRequirementMysql {
 
   async updateReqProcess(profileId: string, faseId: string, reqC: number, proC: number, call: string, invitation: string): Promise<number> {
     let sql = '';
+    // Actualiza la convocatoria
     if (call) sql = `UPDATE PROCESOREQUERIMIENTO SET CONVOCATORIA = '${call}'
                       WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '${faseId}'
                       AND CONSECREQUE_FK = ${reqC} AND CONSPROCESO = ${proC}`;
+
+    // Actualiza la invitación
     if (invitation) sql = `UPDATE PROCESOREQUERIMIENTO SET INVITACION = '${invitation}'
                       WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '${faseId}'
                       AND CONSECREQUE_FK = ${reqC} AND CONSPROCESO = ${proC}`;
@@ -57,17 +60,5 @@ export class PersistRequirementMysql {
     const result = await executeQuery(sql);
 
     return result;
-  }
-
-  async sendEmail(data: RequirementModel): Promise<boolean> {
-    if (!data.CONSECREQUE) return false;
-    if (!data.CODEMPLEADO_FK2) return false;
-
-    await executeQuery(
-      `UPDATE REQUERIMIENTO SET CODEMPLEADO_FK2 = '${data.CODEMPLEADO_FK2}'
-        WHERE CONSECREQUE = ${data.CONSECREQUE}`
-    );
-
-    return true;
   }
 }

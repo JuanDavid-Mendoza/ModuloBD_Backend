@@ -8,6 +8,7 @@ import {
   GetGeneralAnalysts,
 } from './employees'
 
+// Rutas para los servicios de los Empleados
 const employeeRouter = Router();
 const employeesPath = '/employees';
 

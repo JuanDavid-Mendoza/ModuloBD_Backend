@@ -7,9 +7,9 @@ import {
   GetByEmployeeCode,
   CreateRequirementProcesses,
   UpdateRequirementProcess,
-  SendEmail,
 } from './requirements'
 
+// Rutas para los servicios de los Requerimientos
 const requirementRouter = Router();
 const requirementsPath = '/requirements';
 
@@ -19,6 +19,5 @@ requirementRouter.get(`${requirementsPath}/getAll`, GetRequirements);
 requirementRouter.get(`${requirementsPath}/getByEmployeeCode/:employeeCode`, GetByEmployeeCode);
 requirementRouter.post(`${requirementsPath}/createReqProcesses`, CreateRequirementProcesses);
 requirementRouter.put(`${requirementsPath}/updateReqProcess`, UpdateRequirementProcess);
-requirementRouter.post(`${requirementsPath}/sendEmail`, SendEmail);
 
 export { requirementRouter };

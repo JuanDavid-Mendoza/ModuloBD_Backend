@@ -6,7 +6,7 @@ import { CandidateModel } from '../domain/candidate.model';
 import { HVModel } from '../domain/hv.model';
 import { RequirementProcessModel } from '../../requirements/domain/requirementProcess.model';
 
-export class GetCandidatesMysql {
+export class GetCandidatesSql {
   async byPK(candidatePK: string): Promise<CandidateModel> {
     const candidate = await first(
       `SELECT C.* FROM CANDIDATO C
@@ -16,7 +16,7 @@ export class GetCandidatesMysql {
     return candidate;
   }
 
-  async getCandidates(profileId: string): Promise<CandidateModel[]> {
+  async getCandidatesByProfile(profileId: string): Promise<CandidateModel[]> {
     const candidates = await executeQuery(
       `SELECT DISTINCT C.*, TD.DESCTIPODOC FROM CANDIDATO C
         INNER JOIN TIPODOC TD ON TD.IDTIPODOC = C.IDTIPODOC_FK
@@ -33,6 +33,7 @@ export class GetCandidatesMysql {
   }
 
   async getSummonedCandidates(profileId: string, reqConsec: string): Promise<CandidateModel[]> {
+    // Candidatos que aceptaros la invitación y la convocatoria
     const candidates = await executeQuery(
       `SELECT DISTINCT C.*, TD.DESCTIPODOC FROM CANDIDATO C
       INNER JOIN TIPODOC TD ON TD.IDTIPODOC = C.IDTIPODOC_FK

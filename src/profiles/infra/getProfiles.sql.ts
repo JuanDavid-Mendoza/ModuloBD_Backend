@@ -4,7 +4,7 @@ import {
 } from '../../shared/db.oracle';
 import { ProfileModel } from '../domain/profile.model';
 
-export class GetProfilesMysql {
+export class GetProfilesSql {
   async byPK(profilePK: string): Promise<ProfileModel> {
     const profile = await first(
       `SELECT P.* FROM PERFIL P
@@ -15,6 +15,7 @@ export class GetProfilesMysql {
   }
 
   async getProfiles(): Promise<ProfileModel[]> {
+    // Obtiene los perfiles con sus disciplinas
     const profiles = await executeQuery(
       `SELECT P.*, D.DESCDISCIPLINA FROM PERFIL P
         INNER JOIN DISCIPLINA D ON D.IDDISCIPLINA = P.IDDISCIPLINA_FK`

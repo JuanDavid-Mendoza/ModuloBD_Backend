@@ -5,7 +5,7 @@ import {
 import { TestModel } from '../domain/test.model';
 import { CandidateModel } from '../../candidates/domain/candidate.model';
 
-export class GetTestsMysql {
+export class GetTestsSql {
   async byPK(testPK: string): Promise<TestModel> {
     const test = await first(
       `SELECT P.* FROM PRUEBA P
@@ -44,6 +44,7 @@ export class GetTestsMysql {
   }
 
   async getLastConsec(): Promise<number> {
+    // Obtiene el último consecutivo de los registros en PruebaCandidato actuales en la base de datos
     const consec = await executeQuery(
       `SELECT PC.CONSEPRUEBACANDI FROM PRUEBACANDIDATO PC ORDER BY PC.CONSEPRUEBACANDI DESC`
     ).then((r) => r.length ? r[0].CONSECREQUE : 1);
@@ -52,6 +53,9 @@ export class GetTestsMysql {
   }
 
   async getWinners(profileId: string, phaseId: string, reqConsec: number, testId: string): Promise<CandidateModel[]> {
+    // Primero obtiene la cantidad de preguntas de la Prueba
+    // Luego obtiene el correo (C.USUARIO) de los candidatos que participaron en la prueba con su puntuación
+    // Luego obtiene toda la información de los candidatos cuyo puntaje fue superior a 0.4
     const winners = await executeQuery(
       `SELECT C.*, TD.DESCTIPODOC FROM CANDIDATO C
       INNER JOIN TIPODOC TD ON TD.IDTIPODOC = C.IDTIPODOC_FK

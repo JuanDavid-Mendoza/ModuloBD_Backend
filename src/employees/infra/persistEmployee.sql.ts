@@ -3,7 +3,7 @@ import {
 } from '../../shared/db.oracle';
 import { EmployeeModel } from '../domain/employee.model';
 
-export class PersistEmployeeMysql {
+export class PersistEmployeeSql {
   async create(data: EmployeeModel): Promise<number> {
     data.FECHAEGRESO = data.FECHAEGRESO ? ` TO_DATE('${data.FECHAEGRESO}', 'DD-MM-YYYY') ` : null;
 

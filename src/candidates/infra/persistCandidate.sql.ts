@@ -4,7 +4,7 @@ import {
 import { CandidateModel } from '../domain/candidate.model';
 import { CandidateProcessModel } from '../domain/candidateProcess.model';
 
-export class PersistCandidateMysql {
+export class PersistCandidateSql {
   async create(data: CandidateModel): Promise<number> {
     const result = await executeQuery(
       `INSERT INTO CANDIDATO (USUARIO, IDTIPODOC_FK, NOMBRE, APELLIDO, FECHANACCAND, NDOC) VALUES ('${data.USUARIO}', 
@@ -15,6 +15,7 @@ export class PersistCandidateMysql {
   }
 
   async createCandProcess(data: CandidateProcessModel): Promise<number> {
+    // Crea un registro de la tabla ProcesoCandidato
     data.ANALISIS = data.ANALISIS ? ` '${data.ANALISIS}' ` : null;
     data.OBSERVACION = data.OBSERVACION ? ` '${data.OBSERVACION}' ` : null;
 

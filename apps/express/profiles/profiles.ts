@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import { CrudProfilesApp } from '../../../src/profiles/app/crudProfiles.app';
+import { ProfilesApp } from '../../../src/profiles/app/profiles.app';
+
+// Se obtienen los parámetros de la petición y son enviados a las "App" en sus respectivos métodos
 
 const CreateProfile = async (req: Request, res: Response) => {
   try {
-    const crudProfiles = new CrudProfilesApp();
+    const crudProfiles = new ProfilesApp();
     const data = await crudProfiles.create(req.body);
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
@@ -12,7 +14,7 @@ const CreateProfile = async (req: Request, res: Response) => {
 };
 const GetProfiles = async (req: Request, res: Response) => {
   try {
-    const crudProfiles = new CrudProfilesApp();
+    const crudProfiles = new ProfilesApp();
     const data = await crudProfiles.getProfiles();
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {

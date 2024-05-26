@@ -6,6 +6,7 @@ import {
   GetProfiles,
 } from './profiles'
 
+// Rutas para los servicios de los Perfiles
 const profileRouter = Router();
 const profilesPath = '/profiles';
 
