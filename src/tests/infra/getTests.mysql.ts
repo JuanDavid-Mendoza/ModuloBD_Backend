@@ -3,6 +3,7 @@ import {
   first,
 } from '../../shared/db.oracle';
 import { TestModel } from '../domain/test.model';
+import { CandidateModel } from '../../candidates/domain/candidate.model';
 
 export class GetTestsMysql {
   async byPK(testPK: string): Promise<TestModel> {
@@ -30,5 +31,23 @@ export class GetTestsMysql {
     );
 
     return tests;
+  }
+
+  async getPreselectedCandidates(profileId: string, reqConsec: number): Promise<CandidateModel[]> {
+    const tests = await executeQuery(
+      `SELECT C.* FROM CANDIDATO C
+        INNER JOIN PROCESOCANDIDATO PC ON (PC.USUARIO_FK = C.USUARIO AND PC.IDPERFIL_FK = '${profileId}' 
+          AND PC.IDFASE_FK = '6' AND PC.CONSECREQUE_FK = ${reqConsec})`
+    );
+
+    return tests;
+  }
+
+  async getLastConsec(): Promise<number> {
+    const consec = await executeQuery(
+      `SELECT PC.CONSEPRUEBACANDI FROM PRUEBACANDIDATO PC ORDER BY PC.CONSEPRUEBACANDI DESC`
+    ).then((r) => r.length ? r[0].CONSECREQUE : 1);
+
+    return consec;
   }
 }

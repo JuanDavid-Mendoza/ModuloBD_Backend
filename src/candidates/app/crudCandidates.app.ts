@@ -17,6 +17,9 @@ export class CrudCandidatesApp {
 
   async createCandProcesses(data: CandidateProcessModel) {
     const persistCandidate = new PersistCandidateMysql();
+    const getCandidate = new GetCandidatesMysql();
+    const reqProcess = await getCandidate.getRequiremetProcessByPk(data.IDPERFIL_FK!, data.IDFASE_FK!, data.CONSECREQUE_FK!);
+    if (!reqProcess) return false;
 
     for await (const user of data.USERS!) {
       const process = {
@@ -24,7 +27,7 @@ export class CrudCandidatesApp {
         IDPERFIL_FK: data.IDPERFIL_FK,
         IDFASE_FK: data.IDFASE_FK,
         CONSECREQUE_FK: data.CONSECREQUE_FK,
-        CONSPROCESO_FK: data.CONSPROCESO_FK,
+        CONSPROCESO_FK: reqProcess.CONSPROCESO,
         FECHAPRESENTACION: data.FECHAPRESENTACION
       }
 

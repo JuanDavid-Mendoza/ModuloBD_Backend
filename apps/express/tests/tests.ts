@@ -30,9 +30,20 @@ const GetTestByProfile = async (req: Request, res: Response) => {
     return res.status(500).json({ error: e });
   }
 };
+const CreateCandidateTest = async (req: Request, res: Response) => {
+  try {
+    const crudTests = new CrudTestsApp();
+    const data = await crudTests.createCandTest(req.body);
+    return data ? res.status(200).json(data) : res.status(200).json();
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({ error: e });
+  }
+};
 
 export {
   CreateTest,
   GetTests,
   GetTestByProfile,
+  CreateCandidateTest,
 };

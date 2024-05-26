@@ -4,6 +4,7 @@ import {
 } from '../../shared/db.oracle';
 import { CandidateModel } from '../domain/candidate.model';
 import { HVModel } from '../domain/hv.model';
+import { RequirementProcessModel } from '../../requirements/domain/requirementProcess.model';
 
 export class GetCandidatesMysql {
   async byPK(candidatePK: string): Promise<CandidateModel> {
@@ -56,5 +57,14 @@ export class GetCandidatesMysql {
     );
 
     return hvs;
+  }
+
+  async getRequiremetProcessByPk(profileId: string, phaseId: string, reqConsec: number): Promise<RequirementProcessModel> {
+    const req = await executeQuery(
+      `SELECT CONSPROCESO FROM PROCESOREQUERIMIENTO 
+      WHERE IDPERFIL_FK = '${profileId}' and IDFASE_FK = '${phaseId}' and CONSECREQUE_FK = ${reqConsec}`
+    );
+
+    return req[0];
   }
 }
