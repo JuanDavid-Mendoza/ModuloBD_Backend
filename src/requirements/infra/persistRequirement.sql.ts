@@ -45,19 +45,19 @@ export class PersistRequirementSql {
     return result;
   }
 
-  async updateReqProcess(profileId: string, faseId: string, reqC: number, proC: number, call: string, invitation: string): Promise<number> {
-    let sql = '';
-    // Actualiza la convocatoria
-    if (call) sql = `UPDATE PROCESOREQUERIMIENTO SET CONVOCATORIA = '${call}'
-                      WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '${faseId}'
-                      AND CONSECREQUE_FK = ${reqC} AND CONSPROCESO = ${proC}`;
+  async updateReqProcess(profileId: string, faseId: string, reqC: number, proC: number, call: string, invitation: string, endDate: string): Promise<number> {
+    if (!call && !invitation && !endDate) return 0;
 
-    // Actualiza la invitación
-    if (invitation) sql = `UPDATE PROCESOREQUERIMIENTO SET INVITACION = '${invitation}'
-                      WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '${faseId}'
-                      AND CONSECREQUE_FK = ${reqC} AND CONSPROCESO = ${proC}`;
+    let auxUpdate = '';
+    if (endDate) auxUpdate = `FECHAFIN = TO_DATE('${endDate}', 'DD-MM-YYYY')`; // Actualiza la fecha de fin
+    if (call) auxUpdate = `CONVOCATORIA = '${call}'`; // Actualiza la convocatoria
+    if (invitation) auxUpdate = `INVITACION = '${invitation}'`; // Actualiza la invitacion
 
-    const result = await executeQuery(sql);
+    const result = await executeQuery(
+      `UPDATE PROCESOREQUERIMIENTO SET ${auxUpdate}
+        WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '${faseId}'
+        AND CONSECREQUE_FK = ${reqC} AND CONSPROCESO = ${proC}`
+    );
 
     return result;
   }

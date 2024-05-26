@@ -114,6 +114,7 @@ export class RequirementsApp {
         data.CONSPROCESO!,
         data.CONVOCATORIA!,
         data.INVITACION!,
+        data.FECHAFIN!,
       );
       return { updatedPK: `${data.IDPERFIL_FK} ${data.IDFASE_FK} ${data.CONSECREQUE_FK} ${data.CONSPROCESO}` };
     }
