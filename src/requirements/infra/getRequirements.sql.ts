@@ -59,13 +59,13 @@ export class GetRequirementsSql {
     return result;
   }
 
-  async getReqProcessByRequirement(requirementIds: string): Promise<RequirementProcessModel[]> {
+  async getReqProcessByRequirement(requirements: string): Promise<RequirementProcessModel[]> {
     const reqProcesses = await executeQuery(
       `SELECT PR.*, P.DESPERFIL, D.DESCDISCIPLINA, F.DESFASE FROM PROCESOREQUERIMIENTO PR
         INNER JOIN PERFIL P ON P.IDPERFIL = PR.IDPERFIL_FK
         INNER JOIN DISCIPLINA D ON D.IDDISCIPLINA = P.IDDISCIPLINA_FK
         INNER JOIN FASE F ON F.IDFASE = PR.IDFASE_FK
-        WHERE PR.CONSECREQUE_FK IN (${requirementIds}) ORDER BY PR.CONSPROCESO`
+        WHERE PR.CONSECREQUE_FK IN (${requirements}) ORDER BY PR.CONSPROCESO`
     );
 
     return reqProcesses;
