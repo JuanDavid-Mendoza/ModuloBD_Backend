@@ -15,7 +15,7 @@ const candidatesPath = '/candidates';
 /* Candidates */
 candidateRouter.post(`${candidatesPath}/create`, CreateCandidate);
 candidateRouter.post(`${candidatesPath}/createCandProcesses`, CreateCandidateProcesses);
-candidateRouter.get(`${candidatesPath}/getByProfile/:profileId`, GetCandidatesByProfile);
+candidateRouter.get(`${candidatesPath}/getByProfile`, GetCandidatesByProfile);
 candidateRouter.get(`${candidatesPath}/summonedCandidates`, GetSummonedCandidates);
 
 export { candidateRouter };

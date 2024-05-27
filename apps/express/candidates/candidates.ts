@@ -24,9 +24,9 @@ const CreateCandidateProcesses = async (req: Request, res: Response) => {
 };
 const GetCandidatesByProfile = async (req: Request, res: Response) => {
   try {
-    const profileId = req.params ? req.params.profileId : null as any;
+    const params = req.query as any || {};
     const crudCandidates = new CandidatesApp();
-    const data = await crudCandidates.getCandidatesByProfile(profileId);
+    const data = await crudCandidates.getCandidatesByProfile(params.profileId, params.reqConsec);
     return data ? res.status(200).json(data) : res.status(200).json();
   } catch (e) {
     console.log(e)

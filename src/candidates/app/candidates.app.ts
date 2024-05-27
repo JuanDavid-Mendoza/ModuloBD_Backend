@@ -47,9 +47,9 @@ export class CandidatesApp {
     return true;
   }
 
-  async getCandidatesByProfile(profileId: string) {
+  async getCandidatesByProfile(profileId: string, reqConsec: string) {
     const getCandidates = new GetCandidatesSql();
-    const candidates = await getCandidates.getCandidatesByProfile(profileId);
+    const candidates = await getCandidates.getCandidatesByProfile(profileId, reqConsec);
 
     if (candidates.length) {
       // Agrega las HVs de cada candidato

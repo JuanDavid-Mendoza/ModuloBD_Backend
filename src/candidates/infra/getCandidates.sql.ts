@@ -16,16 +16,15 @@ export class GetCandidatesSql {
     return candidate;
   }
 
-  async getCandidatesByProfile(profileId: string): Promise<CandidateModel[]> {
+  async getCandidatesByProfile(profileId: string, reqConsec: string): Promise<CandidateModel[]> {
     const candidates = await executeQuery(
       `SELECT DISTINCT C.*, TD.DESCTIPODOC FROM CANDIDATO C
         INNER JOIN TIPODOC TD ON TD.IDTIPODOC = C.IDTIPODOC_FK
         INNER JOIN HV ON HV.USUARIO_FK = C.USUARIO
         INNER JOIN TIPOITEMPERFIL TIP ON TIP.IDTIPOITEMPERFIL = HV.IDTIPOITEMPERFIL_FK
-        WHERE TIP.IDTIPOITEMPERFIL IN (
-          SELECT TIP.IDTIPOITEMPERFIL FROM TIPOITEMPERFIL TIP
-          INNER JOIN ITEMPERFIL IP ON IP.IDTIPOITEMPERFIL_FK = TIP.IDTIPOITEMPERFIL
-          WHERE IP.IDPERFIL_FK = '${profileId}'
+        WHERE C.USUARIO IN (
+          SELECT USUARIO_FK FROM PROCESOCANDIDATO
+          WHERE IDPERFIL_FK = '${profileId}' AND IDFASE_FK = '3' AND CONSECREQUE_FK = ${reqConsec}
         )`
     );
 
