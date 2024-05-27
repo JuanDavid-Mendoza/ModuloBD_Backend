@@ -37,7 +37,7 @@ export class GetTestsSql {
     const tests = await executeQuery(
       `SELECT C.* FROM CANDIDATO C
         INNER JOIN PROCESOCANDIDATO PC ON (PC.USUARIO_FK = C.USUARIO AND PC.IDPERFIL_FK = '${profileId}' 
-          AND PC.IDFASE_FK = '6' AND PC.CONSECREQUE_FK = ${reqConsec})`
+          AND PC.IDFASE_FK = '5' AND PC.CONSECREQUE_FK = ${reqConsec})`
     );
 
     return tests;

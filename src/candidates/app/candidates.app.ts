@@ -2,6 +2,7 @@ import { CandidateModel } from '../domain/candidate.model';
 import { CandidateProcessModel } from '../domain/candidateProcess.model';
 import { PersistCandidateSql } from '../infra/persistCandidate.sql';
 import { GetCandidatesSql } from '../infra/getCandidates.sql';
+import { GetTestsSql } from '../../tests/infra/getTests.sql';
 
 // Se realiza la lógica pertinente para hacer las peticiones a las clases "Sql" y ajustar las respuestas de las mismas
 // Las clases "Model" representan las tablas de la base de datos
@@ -21,8 +22,13 @@ export class CandidatesApp {
   async createCandProcesses(data: CandidateProcessModel) {
     const persistCandidate = new PersistCandidateSql();
     const getCandidate = new GetCandidatesSql();
+    const getTest = new GetTestsSql();
     const reqProcess = await getCandidate.getRequiremetProcessByPk(data.IDPERFIL_FK!, data.IDFASE_FK!, data.CONSECREQUE_FK!);
     if (!reqProcess) return false;
+
+    if (!data.USERS) {
+      data.USERS = (await getTest.getPreselectedCandidates(data.IDPERFIL_FK!, data.CONSECREQUE_FK!)).map((c) => c.USUARIO as any);
+    }
 
     for await (const user of data.USERS!) {
       // Por cada usuario, crea un registro en la tabla ProcesoCandidato
